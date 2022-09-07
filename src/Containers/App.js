@@ -1,51 +1,64 @@
-import React, {Component} from "react";
-import Searchbox from "../Components/Searchbox";
-import CardList from "../Components/CardList";
-import Scroll from "../Components/Scroll";
-import { directory } from "../directory";
+import React, {useState, useEffect} from 'react'
 import './App.css';
+import NavBar from '../Components/NavBar';
+import AddCard from '../Components/AddCard';
 import DisplayCard from "../Components/DisplayCard";
+import SignIn from '../Components/SignIn';
+import { auth } from './../firebaseConfig';
+import {GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from 'firebase/auth';
+// import DeleteModal from '../Components/DeleteModal';
 
-class App extends Component {
-    constructor() { 
-        super()
-        this.state = {
-            directory: directory,
-            searchfield: "",
-        }
-    } 
+function App() {   
+    
+    const [update, setUpdate] = useState(true);
+    const [user, setUser] = useState(null)
+    const [signinErr, setSigninErr] = useState(null)
 
-    // also set the directory in state as empty if you use this as directory will update when user list is fetched from the server (directory: [])
-
-    // componentDidMount() {
-    //     fetch('https://jsonplaceholder.typicode.com/users')
-    //     .then(response => response.json())
-    //     .then(users => this.setState({directory: users}))
-    // }
-
-    whenISearch = (event) => {
-        this.setState({searchfield: event.target.value})
+    const googleSignIn = () => {
+        setSigninErr('')
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then(() => {})
+            .catch((err) => {
+                setSigninErr(err.message)
+            })
     }
 
-    render() {
-        const {directory, searchfield} = this.state
-        const filteredDirectory = directory.filter(directory => {
-            return directory.name.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
-        })
+    const googleSignOut = () => {
+        signOut(auth)
+        console.log('user loged out')
+    }
 
-        return !directory.length ?
-            <h1>loading</h1> :
-        (
-            <div className="tc">
-                <h1 style={{fontSize: "3rem"}}>RoboDirectory</h1>
-                <Searchbox searchChange = { this.whenISearch }/>
-                <DisplayCard/>
-                <Scroll> 
-                    <CardList directory = { filteredDirectory }/>
-                </Scroll>
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged( auth, (currentUser) => {
+        setUser(currentUser)
+        console.log("User (from Authcontext): ", user)
+        })
+        return () => {
+        unsubscribe()
+        }
+    }, [user, user?.displayName])
+
+    if (!user) {
+        return (
+            <div className="center">
+                <SignIn googleSignIn={googleSignIn} signinErr={signinErr}/>
             </div>
         )
     }
+
+    return (
+        <div className='app'>
+            <NavBar googleSignOut={googleSignOut} user={user} />
+            <AddCard update={update} setUpdate={setUpdate} uid={user.uid}/>
+            <DisplayCard update={update} setUpdate={setUpdate} uid={user.uid} />
+            {/* <DeleteModal /> */}
+        </div>
+        // <div>
+        //     <DeleteModal />
+        // </div>
+    )
 }
 
-export default App;
+export default App
+

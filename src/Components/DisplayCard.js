@@ -3,41 +3,46 @@ import './DisplayCard.css';
 import Searchbox from './Searchbox';
 import CardList from './CardList';
 import Scroll from './Scroll';
-import db from '../firebaseConfig'
+import {db} from '../firebaseConfig'
 import {collection, getDocs} from 'firebase/firestore'
 
-function DisplayCard() {
+function DisplayCard({update, setUpdate, uid}) {
 
   const [directory, setDirectory] = useState([]);
   const [searchfield, setSearchfield] = useState('');
 
   useEffect(() => {
     const getContacts = async() => {
-      const contactsCollectionRef = collection(db, 'contacts');
+      const contactsCollectionRef = collection(db, uid);
       const data = await getDocs(contactsCollectionRef);
       setDirectory(data.docs.map((contact) => ({...contact.data(), id: contact.id})))
     }
     getContacts();
-  },[])
+  },[update, uid])
 
-  const whenISearch = async(event) => {
+  const whenISearch = (event) => {
     setSearchfield(event.target.value);
-    filterDirectory();
+    console.log('searchfield', searchfield)
   }
 
-  const filterDirectory = async() => {
-    directory.filter(contact => {
-      return contact.name.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
-    })
-  }
+  const filteredDirectory = directory.filter(contact => {
+      return (
+        contact.name.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
+        || contact.phone.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
+        || contact.email.toLocaleLowerCase().includes(searchfield.toLocaleLowerCase())
+      )
+  })
+  
 
   return (
-    <div>
-      <Searchbox searchChange = {whenISearch}/>
-      <Scroll> 
-          <CardList directory = {directory}/>
-      </Scroll>
-    </div>
+    !directory.length 
+      ? <h2 className='center' style={{display: "flex", placeItems: 'center', margin: "0 auto"}}>Please Enter your Contacts</h2> 
+      : <div className='displaycard'>
+          <Searchbox searchChange = {whenISearch} />
+          <Scroll> 
+            <CardList directory={filteredDirectory} uid={uid} update={update} setUpdate={setUpdate} />
+          </Scroll>
+        </div>
   )
 }
 

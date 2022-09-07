@@ -1,0 +1,72 @@
+/* .addcard {
+  background: white;
+  padding: 10px;
+  
+} */
+
+.addcard {
+  grid-area: b;
+  place-items: center;
+  /* align-items: center; */
+  border-right: 5px solid black;
+  /* height: 24rem; */
+}
+
+.input-section {
+  padding: 0 1rem;
+  padding-bottom: 1rem;
+  margin: 2rem;
+  margin-top: 15vh;
+  background: var(--clr-white);
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  max-width: 35rem;
+  min-width: 80%;
+}
+
+.addcard>h2 {
+  padding-top: 0.25rem;
+  color: var(--clr-grey-5);
+  /* font-weight: 400; */
+  /* text-transform: uppercase; */
+}
+
+.input-section:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.form-control {
+  display: block;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+  border: none;
+  background: var(--clr-grey-10);
+  border-radius: var(--radius);
+  /* text-transform: uppercase; */
+  letter-spacing: var(--spacing)
+}
+
+.addcard-submit {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.3rem;
+  width: 100%;
+  border: none;
+  background: #8fbb5f;
+}
+
+/* .addcard {
+  grid-area: b;
+  place-items: center;
+  border-right: 5px solid black;
+}
+
+.legend {
+  font-size: 4rem;
+  text-align: center;
+  font-weight: 800;
+
+} */

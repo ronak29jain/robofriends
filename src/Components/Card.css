@@ -1,3 +1,76 @@
 #card {
     background: #fde18c;
 }
+
+.delete-btn {
+    /* display: flex; */
+    /* justify-content: end; */
+    color: red;
+    text-align: end;
+    /* margin-top: 0.5rem; */
+    /* margin-right: 0.5rem; */
+    /* margin-left: 5rem; */
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    /* transform: scale(1.2); */
+    /* transition: var(--transition); */
+    /* margin-right: 0.5rem; */
+}
+
+.modal {
+    position: fixed;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100vw;
+    height: 100vh;
+    /* padding: 3rem; */
+    top: 0;
+    left: 0;
+}
+
+.modal:before {
+    /* background: rgba(0, 0, 0, 0.4); */
+}
+
+.modal-content {
+    position: relative;
+    background: wheat;
+    border: 2px solid black;
+    border-radius: 0.75rem;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: fit-content;
+    padding: 3rem;
+    padding-top: 1rem;
+}
+
+.modal-content h5 {
+    text-align: right;
+}
+
+.x {
+    /* width: fit-content; */
+    color: red;
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.delete-contact {
+    color: blueviolet;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+.delete-button {
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    background-color: aqua;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
